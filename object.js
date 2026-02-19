@@ -230,3 +230,200 @@ console.log("После +10:", accumulator.value);
 accumulator.read(5);
 console.log("После +5:", accumulator.value); 
 console.log("");
+
+
+console.log("    ---Работа с прототипами---  "); 
+console.log("");
+console.log("ЗАДАНИЕ 1");
+
+let animal = {
+    jumps: null
+};
+
+let rabbit = {
+    __proto__: animal,
+    jumps: true
+};
+
+console.log("(1) rabbit.jumps =", rabbit.jumps); //rabbit имеет собственное свойство jumps = true
+
+delete rabbit.jumps;
+console.log("(2) После удаления rabbit.jumps =", rabbit.jumps); //После удаления свойства у rabbit, оно берется из прототипа animal (jumps = null)
+delete animal.jumps;
+console.log("(3) После удаления animal.jumps =", rabbit.jumps);//После удаления свойства у animal, его больше нет нигде → undefined
+
+console.log(""); 
+
+console.log("ЗАДАНИЕ 2");
+
+let animal2 = {
+    eat: function() {
+        this.full = true;
+        console.log("Метод eat вызван у:", this);
+    }
+};
+
+let rabbit2 = {
+    __proto__: animal2
+};
+
+rabbit2.eat();
+console.log("rabbit2.full =", rabbit2.full);
+console.log("animal2.full =", animal2.full); 
+
+console.log("Свойство full получил rabbit2, \
+    потому что this внутри метода eat() ссылается на объект,\
+     который вызвал метод (rabbit2)");
+
+console.log("");
+
+
+
+console.log("ЗАДАНИЕ 3");
+
+// Исходный код с проблемой
+let hamster = {
+    stomach: [], // ОДИН массив на всех!
+    eat: function(food) {
+        this.stomach.push(food);
+    }
+};
+
+let speedy = {
+    __proto__: hamster
+};
+
+let lazy = {
+    __proto__: hamster
+};
+
+speedy.eat("apple");
+
+console.log("ПРОБЛЕМА:");
+console.log("speedy.stomach =", speedy.stomach);
+console.log("lazy.stomach =", lazy.stomach); 
+
+console.log("\nПочему так произошло?");
+console.log("У speedy и lazy нет своего stomach, \
+    они используют один массив из прототипа hamster.");
+
+// ИСПРАВЛЕНИЕ
+let hamsterFixed = {
+    stomach: [], // Это все еще прототип, 
+    // но теперь мы будем создавать свои stomach
+    eat: function(food) {
+        if (!this.hasOwnProperty('stomach')) {
+            this.stomach = [];
+        }
+        this.stomach.push(food);
+    }
+};
+
+let speedyFixed = {
+    __proto__: hamsterFixed
+};
+
+let lazyFixed = {
+    __proto__: hamsterFixed
+};
+
+speedyFixed.eat("apple");
+console.log("speedyFixed.stomach =", speedyFixed.stomach); 
+console.log("lazyFixed.stomach =", lazyFixed.stomach); 
+console.log(""); 
+
+console.log("ЗАДАНИЕ 4");
+
+// Исходный код из задания
+String.prototype.color = "black";
+
+function stringWrite() {
+    console.log("Цвет текста: " + this.color);
+    console.log("Текст: " + this.toString());
+}
+
+String.prototype.write = stringWrite;
+
+console.log("--- Исходный код ---");
+let s = new String("Это строка");
+s.color = "red";
+s.write();
+
+let s2 = new String("Вторая строка");
+s2.write();
+
+// Добавляем свойство size по умолчанию
+String.prototype.size = 12;
+
+String.prototype.write = function() {
+    console.log("Цвет текста: " + (this.color || String.prototype.color));
+    console.log("Размер шрифта: " + (this.size || String.prototype.size));
+    console.log("Текст: " + this.toString());
+    console.log("---");
+};
+
+let s3 = new String("Строка с изменениями");
+s3.color = "blue";
+s3.size = 16;
+s3.write();
+
+let s4 = new String("Строка по умолчанию");
+s4.write();
+
+console.log("Мы добавили свойство size в прототип String,\
+    и метод write выводит его.");
+console.log("Если у конкретной строки нет своего size, \
+    берется из прототипа.");
+
+console.log(""); 
+
+
+
+console.log("ЗАДАНИЕ 5");
+
+function Rabbit() {}
+
+Rabbit.prototype = {
+    eats: true
+};
+
+let rabbit5 = new Rabbit();
+console.log("Исходный rabbit.eats =", rabbit5.eats); 
+
+Rabbit.prototype = {}; 
+console.log("1.rabbit.eats =", rabbit5.eats); 
+console.log("Объяснение: rabbit сохраняет ссылку на старый прототип");
+// Это все еще прототип, но теперь мы будем создавать свои stomach
+Rabbit.prototype = { eats: true };
+let rabbit5b = new Rabbit();
+
+console.log("");
+Rabbit.prototype.eats = false; // Меняем свойство в прототипе
+console.log("2.rabbit.eats =", rabbit5b.eats); // false (прототип изменился)
+
+// Новый объект для теста
+Rabbit.prototype = { eats: true };
+let rabbit5c = new Rabbit();
+
+console.log("");
+delete rabbit5c.eats; // Удаляем собственное свойство (которого нет)
+console.log("3.rabbit.eats =", rabbit5c.eats); // true (берется из прототипа)
+
+// Новый объект для теста
+Rabbit.prototype = { eats: true };
+let rabbit5d = new Rabbit();
+
+console.log("");
+delete Rabbit.prototype.eats; // Удаляем свойство из прототипа
+console.log("4.rabbit.eats =", rabbit5d.eats); // undefined (свойства больше нет)
+
+console.log();
+console.log("1. Rabbit.prototype = {} → true (старый прототип сохраняется)");
+console.log("2. Rabbit.prototype.eats = false → false (прототип изменен)");
+console.log("3. delete rabbit.eats → true (удаляем несуществующее свойство)");
+console.log("4. delete Rabbit.prototype.eats → undefined (удаляем из прототипа)");
+
+console.log(""); // Пустая строка
+
+console.log("");
+
