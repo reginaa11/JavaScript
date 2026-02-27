@@ -1,11 +1,57 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Лабораторная работа 4: Асинхронность</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        .note {
+            background-color: #f0f0f0;
+            padding: 15px;
+            border-left: 4px solid #007bff;
+            margin-bottom: 20px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
+    <h1>Лабораторная работа 4: Асинхронность</h1>
     
+    <div class="note">
+        <strong>Инструкция:</strong> Открой консоль разработчика (F12 → Console), чтобы увидеть результаты выполнения заданий.
+    </div>
+   
+    <h2>Задания:</h2>
+    <ol>
+        <li>Проверка пароля с коллбэками (ask_password)</li>
+        <li>Последовательное выполнение асинхронных функций:
+            <ul>
+                <li>a. С помощью коллбэков</li>
+                <li>b. С помощью функций-уведомителей</li>
+            </ul>
+        </li>
+        <li>Вычисление F(x) = f1(x) + f2(x) + ... + fn(x) для n = 2, 4, 6</li>
+    </ol>
+    
+    <!-- Подключаем скрипт -->
+    <script src="object.js"></script>
 </body>
 </html>
