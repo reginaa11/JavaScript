@@ -344,7 +344,7 @@ function stringWrite() {
 
 String.prototype.write = stringWrite;
 
-console.log("--- Исходный код ---");
+console.log("Исходный код");
 let s = new String("Это строка");
 s.color = "red";
 s.write();
@@ -427,3 +427,203 @@ console.log(""); // Пустая строка
 
 console.log("");
 
+console.log(""); 
+console.log("=== КЛАССЫ ===");
+console.log(""); 
+
+
+
+console.log("ЗАДАНИЕ 1");
+
+class Clock {
+    constructor(hours, minutes, seconds) {
+        this.hours = hours;
+        this.minutes = minutes;
+        this.seconds = seconds;
+    }
+    
+    showTime() {
+        console.log(this.hours + ":" + this.minutes + ":" + this.seconds);
+    }
+}
+
+let clock1 = new Clock(10, 30, 45);
+clock1.showTime();
+
+console.log(""); 
+
+
+
+
+console.log("ЗАДАНИЕ 2");
+
+class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+}
+
+// Исправленный класс
+class MyRabbit extends Animal {
+    constructor(name) {
+        super(name);
+        this.created = Date.now();
+    }
+}
+
+let myrabbit = new Rabbit("Белый кролик");
+console.log(rabbit.name);
+console.log(rabbit.created);
+
+console.log(""); 
+
+
+
+console.log("ЗАДАНИЕ 3");
+
+class Clock2 {
+    constructor(template) {
+        this.template = template;
+    }
+    
+    render() {
+        let date = new Date();
+        let hours = date.getHours();
+        let mins = date.getMinutes();
+        let secs = date.getSeconds();
+        
+        let output = this.template
+            .replace('h', hours)
+            .replace('m', mins)
+            .replace('s', secs);
+        
+        console.log(output);
+    }
+    
+    stop() {
+        clearInterval(this.timer);
+    }
+    
+    start() {
+        this.render();
+        this.timer = setInterval(() => this.render(), 1000);
+    }
+}
+
+class ExtendedClock extends Clock2 {
+    constructor(template, precision) {
+        super(template);
+        this.precision = precision || 1000;
+    }
+    
+    start() {
+        this.render();
+        this.timer = setInterval(() => this.render(), this.precision);
+    }
+}
+
+let extendedClock = new ExtendedClock("h:m:s", 2000);
+console.log("Класс ExtendedClock создан");
+
+console.log(""); 
+
+
+
+
+console.log("ЗАДАНИЕ 4");
+
+class Stock {
+    constructor() {
+        this.boxes = [];
+        this.nextId = 0;
+    }
+    
+    add(w, v) {
+        let box = {
+            id: this.nextId,
+            w: w,
+            v: v,
+            time: Date.now()
+        };
+        this.boxes.push(box);
+        console.log("Добавлена коробка " + this.nextId + ": w=" + w + ", v=" + v);
+        this.nextId++;
+    }
+    
+    getByW(min_w) {
+        let result = -1;
+        let bestBox = null;
+        
+        for (let i = 0; i < this.boxes.length; i++) {
+            let box = this.boxes[i];
+            if (box.w >= min_w) {
+                if (bestBox === null || box.w < bestBox.w) {
+                    bestBox = box;
+                } else if (box.w === bestBox.w && box.time < bestBox.time) {
+                    bestBox = box;
+                }
+            }
+        }
+        
+        if (bestBox !== null) {
+            result = bestBox.id;
+            let newBoxes = [];
+            for (let i = 0; i < this.boxes.length; i++) {
+                if (this.boxes[i].id !== bestBox.id) {
+                    newBoxes.push(this.boxes[i]);
+                }
+            }
+            this.boxes = newBoxes;
+            console.log("Выдана коробка " + result);
+        } else {
+            console.log("Нет подходящей коробки");
+        }
+        
+        return result;
+    }
+    
+    getByV(min_v) {
+        let result = -1;
+        let bestBox = null;
+        
+        for (let i = 0; i < this.boxes.length; i++) {
+            let box = this.boxes[i];
+            if (box.v >= min_v) {
+                if (bestBox === null || box.v < bestBox.v) {
+                    bestBox = box;
+                } else if (box.v === bestBox.v && box.time < bestBox.time) {
+                    bestBox = box;
+                }
+            }
+        }
+        
+        if (bestBox !== null) {
+            result = bestBox.id;
+            let newBoxes = [];
+            for (let i = 0; i < this.boxes.length; i++) {
+                if (this.boxes[i].id !== bestBox.id) {
+                    newBoxes.push(this.boxes[i]);
+                }
+            }
+            this.boxes = newBoxes;
+            console.log("Выдана коробка " + result);
+        } else {
+            console.log("Нет подходящей коробки");
+        }
+        
+        return result;
+    }
+}
+
+let stock = new Stock();
+stock.add(10, 20);
+stock.add(15, 5);
+stock.add(10, 30);
+
+console.log("");
+console.log("Тест getByW:");
+stock.getByW(10);
+
+console.log("");
+console.log("Тест getByV:");
+stock.getByV(15);
