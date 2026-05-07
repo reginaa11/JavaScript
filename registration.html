@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Регина - Регистрация в Сервис</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="loader.css">
+</head>
+<body>
+    <header></header>
+
+    <section id="loader">
+        <div class="loader-container">
+            <div class="loader-bar" id="loaderBar"></div>
+            <p>Браузерные гномы собирают страницу...</p>
+        </div>
+    </section>
+
+    <main id="page" class="invisible">
+        
+        <div class="indicator invisible" id="stepIndicator">
+            <div class="indicator-fill" id="indicatorFill"></div>
+        </div>
+
+        <section id="frame_1">
+            <p>Добро пожаловать в <span>Сервис</span>!</p>
+            <small>Для продолжения нужно зарегистрироваться</small>
+            <button type="button" name="reg" id="startRegBtn">Регистрация</button>
+        </section>
+
+        <section id="frame_2" class="invisible">
+            <h2>Шаг 1. Персональные данные</h2>
+            <form id="personalForm">
+                <label>Имя: <input type="text" id="firstName"></label>
+                <label>Фамилия: <input type="text" id="lastName"></label>
+                <label>Электронная почта: <input type="email" id="email"></label>
+                <label>Адрес: <input type="text" id="address"></label>
+                <label>Страна:
+                    <select id="country"></select>
+                </label>
+                <label>Пароль: <input type="password" id="password"></label>
+                <label>Повторите пароль: <input type="password" id="confirmPassword"></label>
+                <div>
+                    <button type="button" id="cancelStep1">Отмена</button>
+                    <button type="button" id="nextStep1" disabled>Далее</button>
+                </div>
+            </form>
+        </section>
+
+        <section id="frame_3" class="invisible">
+            <h2>Шаг 2. Телефонный номер</h2>
+            <p>В целях безопасности нужен ваш номер. На него будет отправлен 4-значный код.</p>
+            <div>
+                <label>Телефон: <input type="tel" id="phone" placeholder="+7 (123) 456-78-90"></label>
+                <button type="button" id="sendCodeBtn">Отправить</button>
+            </div>
+            <div id="codeSection" style="display:none;">
+                <p>Код подтверждения:</p>
+                <input type="text" id="verificationCode" maxlength="4" placeholder="XXXX">
+                <button type="button" id="verifyCodeBtn">Проверить</button>
+            </div>
+            <div>
+                <button type="button" id="backStep2">Назад</button>
+                <button type="button" id="nextStep2" disabled>Далее</button>
+            </div>
+        </section>
+
+        <section id="frame_4" class="invisible">
+            <h2>Шаг 3. Метод оплаты</h2>
+            <p>Подключите банковскую карту.</p>
+            <div>
+                <label>Номер карты:</label>
+                <div id="cardInputs">
+                    <input type="text" maxlength="4" class="card-part" placeholder="1111">
+                    <input type="text" maxlength="4" class="card-part" placeholder="2222">
+                    <input type="text" maxlength="4" class="card-part" placeholder="3333">
+                    <input type="text" maxlength="4" class="card-part" placeholder="4444">
+                </div>
+                <label>Срок действия: <input type="text" id="expiry" placeholder="MM/YY"></label>
+                <label>CVV: <input type="text" id="cvv" maxlength="3" placeholder="XXX"></label>
+                <label><input type="checkbox" id="agreeCheckbox"> Я согласен со всеми условиями</label>
+            </div>
+            <div>
+                <button type="button" id="backStep3">Назад</button>
+                <button type="button" id="nextStep3" disabled>Завершить</button>
+            </div>
+        </section>
+
+        <section id="frame_5" class="invisible">
+            <h2>Поздравляем!</h2>
+            <p>Регистрация успешно завершена!</p>
+            <p>Благодарим за использование нашего сервиса!</p>
+        </section>
+    </main>
+
+    <script src="loader.js"></script>
+    <script src="code.js"></script>
+</body>
+</html>
