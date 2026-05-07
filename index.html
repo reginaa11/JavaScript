@@ -1,11 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Регина - Лабораторная 7</title>
+    <style>
+        body { font-family: Arial; margin: 20px; background: #f0f0f0; }
+        .task { background: white; padding: 15px; margin: 15px 0; border-radius: 10px; }
+        button, input { margin: 5px; padding: 8px 12px; cursor: pointer; }
+        #text { background: #ddd; padding: 10px; width: 200px; }
+        #coords { border: 1px solid #ccc; padding: 10px; min-height: 100px; }
+        #line { width: 300px; height: 5px; background: black; margin: 20px 0; transition: all 0.3s; }
+        .controls { margin: 10px 0; }
+        input[type="range"] { width: 200px; }
+    </style>
 </head>
 <body>
-    
+
+    <h1>Лабораторная 7: JavaScript в браузере - 2</h1>
+
+    <!-- ЗАДАНИЕ 1: Исчезающий div -->
+    <div class="task">
+        <h3>1. Кнопка скрывает текст</h3>
+        <div id="text">Я исчезну при нажатии на кнопку</div>
+        <button id="hideBtn">Скрыть текст</button>
+    </div>
+
+    <!-- ЗАДАНИЕ 2: Кнопка которая скрывает себя -->
+    <div class="task">
+        <h3>2. Кнопка скрывает саму себя</h3>
+        <button id="selfHideBtn">Нажми, чтобы исчезнуть</button>
+    </div>
+
+    <!-- ЗАДАНИЕ 3: Координаты клика -->
+    <div class="task">
+        <h3>3. Координаты нажатия мыши</h3>
+        <div id="coords">Кликни здесь, чтобы увидеть координаты</div>
+    </div>
+
+    <!-- ЗАДАНИЕ 4: Alert при клике (кликни где угодно на странице) -->
+    <div class="task">
+        <h3>4. Alert при клике по странице</h3>
+        <p>Кликни в любом месте страницы — появится окно с надписью</p>
+    </div>
+
+    <!-- ЗАДАНИЕ 5: Изменение текста в поле -->
+    <div class="task">
+        <h3>5. При изменении текста — alert</h3>
+        <input type="text" id="textInput" placeholder="Напиши что-нибудь">
+    </div>
+
+    <!-- ЗАДАНИЕ 6: Средняя зарплата -->
+    <div class="task">
+        <h3>6. Средняя зарплата за 6 месяцев</h3>
+        <label>Январь: <input type="number" class="salary" value="50000"></label>
+        <label>Февраль: <input type="number" class="salary" value="52000"></label>
+        <label>Март: <input type="number" class="salary" value="48000"></label>
+        <label>Апрель: <input type="number" class="salary" value="55000"></label>
+        <label>Май: <input type="number" class="salary" value="60000"></label>
+        <label>Июнь: <input type="number" class="salary" value="58000"></label>
+        <br><button id="calcBtn">Вычислить среднюю</button>
+        <p>Средняя зарплата: <input type="text" id="avgSalary" readonly style="background:#e0e0e0"></p>
+    </div>
+
+    <div class="task">
+        <h3>7. Изменение линии</h3>
+        <div id="line"></div>
+        <div class="controls">
+            <label>Ширина: <input type="range" id="widthSlider" min="50" max="500" value="300"></label>
+            <label>Высота: <input type="range" id="heightSlider" min="2" max="20" value="5"></label>
+            <label>Цвет: <input type="color" id="colorPicker" value="#000000"></label>
+            <label>Сдвиг влево: <input type="range" id="leftSlider" min="0" max="200" value="0"></label>
+        </div>
+    </div>
+
+    <hr>
+    <h2>👉 <a href="registration.html">Перейти к Заданию 8 (Регистрация)</a></h2>
+
+    <script>
+        // ========== ЗАДАНИЕ 1 ==========
+        document.getElementById('hideBtn').onclick = function() {
+            document.getElementById('text').style.display = 'none';
+        };
+
+        // ========== ЗАДАНИЕ 2 ==========
+        document.getElementById('selfHideBtn').onclick = function() {
+            this.style.display = 'none';  
+        };
+
+        // ========== ЗАДАНИЕ 3 ==========
+        document.getElementById('coords').onclick = function(e) {
+            const rect = this.getBoundingClientRect(); 
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            this.innerHTML = `Координаты: x=${Math.round(x)}, y=${Math.round(y)} (внутри блока)`;
+        };
+
+        // ========== ЗАДАНИЕ 4 ==========
+     
+        document.body.onclick = function() {
+            alert("Был щелчок!");
+        };
+
+        // ========== ЗАДАНИЕ 5 ==========
+        document.getElementById('textInput').onchange = function() {
+            alert("Текст был изменен!!!");
+        };
+
+        // ========== ЗАДАНИЕ 6 ==========
+        document.getElementById('calcBtn').onclick = function() {
+            let salaries = document.querySelectorAll('.salary');
+            let sum = 0;
+            for(let i = 0; i < salaries.length; i++) {
+                sum += Number(salaries[i].value);  
+            }
+            let avg = sum / 6;
+            document.getElementById('avgSalary').value = avg.toFixed(2);  
+        };
+
+        // ========== ЗАДАНИЕ 7 ==========
+        const line = document.getElementById('line');
+        
+        document.getElementById('widthSlider').oninput = function() {
+            line.style.width = this.value + 'px';
+        };
+        
+        document.getElementById('heightSlider').oninput = function() {
+            line.style.height = this.value + 'px';
+        };
+        
+        document.getElementById('colorPicker').oninput = function() {
+            line.style.backgroundColor = this.value;
+        };
+        
+        document.getElementById('leftSlider').oninput = function() {
+            line.style.position = 'relative';
+            line.style.left = this.value + 'px';
+        };
+    </script>
 </body>
 </html>
