@@ -1,11 +1,216 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Лабораторная 8 - Животные</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #e8f4f8;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 26px;
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        
+        .step {
+            text-align: center;
+        }
+        
+        .welcome-text {
+            font-size: 20px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .user-name {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 24px;
+        }
+        
+        button {
+            padding: 10px 25px;
+            font-size: 16px;
+            margin: 10px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            transition: 0.3s;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        
+        .animal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .animal-btn {
+            background-color: #ecf0f1;
+            color: #2c3e50;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+        
+        .animal-btn.active {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .animal-btn:hover {
+            background-color: #bdc3c7;
+        }
+        
+        .result-card {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            text-align: center;
+        }
+        
+        .result-card img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .fact {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            color: #856404;
+            line-height: 1.5;
+            text-align: left;
+        }
+        
+        .info-text {
+            font-size: 12px;
+            color: #95a5a6;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
-    
+    <div class="container">
+        <h1>Лабораторная работа 8</h1>
+        <div class="subtitle">Сервис интересных фактов о животных</div>
+        
+        <!-- Шаг 1 -->
+        <div id="step1" class="step">
+            <div class="welcome-text">
+                Добро пожаловать, <span id="userName" class="user-name">гость</span>!
+            </div>
+            <button id="generateBtn">Сгенерировать имя</button>
+            <button id="nextBtn" disabled>Далее</button>
+            <div class="info-text">Нажмите "Сгенерировать имя", чтобы продолжить</div>
+        </div>
+        
+        <!-- Шаг 2 -->
+        <div id="step2" style="display: none;">
+            <div class="welcome-text">Выберите животное:</div>
+            
+            <div class="animal-buttons">
+                <button class="animal-btn active" data-animal="dog">Собака</button>
+                <button class="animal-btn" data-animal="cat">Кошка</button>
+                <button class="animal-btn" data-animal="fox">Лиса</button>
+            </div>
+            
+            <button id="showFactBtn">Показать факт</button>
+            
+            <div id="result" style="display: none;" class="result-card">
+                <img id="animalImg" alt="Животное">
+                <div class="fact" id="factText"></div>
+            </div>
+            
+            <div class="info-text">Выберите животное и нажмите "Показать факт"</div>
+        </div>
+    </div>
+
+    <script>
+        let currentName = '';
+        let selectedAnimal = 'dog';
+        
+        const animals = {
+            dog: {
+                img: 'https://images.dog.ceo/breeds/hound-afghan/n02088094_1003.jpg',
+                text: 'Собаки могут понимать до 250 слов и жестов. Они умные, как 2-летние дети.'
+            },
+            cat: {
+                img: 'https://cdn2.thecatapi.com/images/MTYwODQxMw.jpg',
+                text: 'Кошки спят 70% жизни. Это примерно 13-16 часов в день.'
+            },
+            fox: {
+                img: 'https://randomfox.ca/images/1.jpg',
+                text: 'Лисы используют магнитное поле Земли для охоты. Очень умные животные.'
+            }
+        };
+        
+        const names = ['Алексей', 'Мария', 'Иван', 'Екатерина', 'Дмитрий', 'Анна', 'Сергей', 'Ольга'];
+        
+        document.getElementById('generateBtn').onclick = function() {
+            const randomName = names[Math.floor(Math.random() * names.length)];
+            currentName = randomName;
+            document.getElementById('userName').textContent = currentName;
+            document.getElementById('nextBtn').disabled = false;
+        };
+        
+        document.getElementById('nextBtn').onclick = function() {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        };
+        
+        const btns = document.querySelectorAll('.animal-btn');
+        btns.forEach(btn => {
+            btn.onclick = function() {
+                btns.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                selectedAnimal = this.getAttribute('data-animal');
+            };
+        });
+        
+        document.getElementById('showFactBtn').onclick = function() {
+            const animal = animals[selectedAnimal];
+            document.getElementById('animalImg').src = animal.img;
+            document.getElementById('animalImg').setAttribute('referrerpolicy', 'no-referrer');
+            document.getElementById('factText').textContent = animal.text;
+            document.getElementById('result').style.display = 'block';
+        };
+    </script>
 </body>
 </html>
